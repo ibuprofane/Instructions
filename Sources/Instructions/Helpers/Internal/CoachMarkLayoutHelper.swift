@@ -9,7 +9,7 @@ class CoachMarkLayoutHelper {
     // TODO: Improve the layout system. Make it smarter.
     func constraints(
         for coachMarkView: CoachMarkView,
-        coachMark: CoachMark,
+        coachMark: CoachMarkConfiguration,
         parentView: UIView,
         layoutDirection: UIUserInterfaceLayoutDirection? = nil,
         passNumber: Int = 0
@@ -38,22 +38,22 @@ class CoachMarkLayoutHelper {
 
         switch computedProperties.horizontalAlignment {
         case .leading:
-            coachMarkView.changeArrowPosition(to: .leading, offset: offset)
+            coachMarkView.changeArrowAlignment(to: .leading, offset: offset)
             return leadingConstraints(for: coachMarkView, withCoachMark: coachMark,
                                       inParentView: parentView)
         case .centered:
-            coachMarkView.changeArrowPosition(to: .center, offset: offset)
+            coachMarkView.changeArrowAlignment(to: .center, offset: offset)
             return middleConstraints(for: coachMarkView, withCoachMark: coachMark,
                                      inParentView: parentView)
         case .trailing:
-            coachMarkView.changeArrowPosition(to: .trailing, offset: offset)
+            coachMarkView.changeArrowAlignment(to: .trailing, offset: offset)
             return trailingConstraints(for: coachMarkView, withCoachMark: coachMark,
                                        inParentView: parentView)
         }
     }
 
     private func leadingConstraints(for coachMarkView: CoachMarkView,
-                                    withCoachMark coachMark: CoachMark,
+                                    withCoachMark coachMark: CoachMarkConfiguration,
                                     inParentView parentView: UIView
     ) -> [NSLayoutConstraint] {
 
@@ -85,7 +85,7 @@ class CoachMarkLayoutHelper {
     }
 
     private func middleConstraints(for coachMarkView: CoachMarkView,
-                                   withCoachMark coachMark: CoachMark,
+                                   withCoachMark coachMark: CoachMarkConfiguration,
                                    inParentView parentView: UIView
     ) -> [NSLayoutConstraint] {
         let maxWidth = min(coachMark.maxWidth, (parentView.bounds.width - 2 *
@@ -119,7 +119,7 @@ class CoachMarkLayoutHelper {
     }
 
     private func trailingConstraints(for coachMarkView: CoachMarkView,
-                                     withCoachMark coachMark: CoachMark,
+                                     withCoachMark coachMark: CoachMarkConfiguration,
                                      inParentView parentView: UIView
     ) -> [NSLayoutConstraint] {
         if #available(iOS 11.0, *) {
@@ -155,7 +155,7 @@ class CoachMarkLayoutHelper {
     /// - Parameter coachMark: coachmark data.
     /// - Parameter properties: precomputed properties.
     /// - Parameter parentView: view showing the coachmarks.
-    private func arrowOffset(for coachMark: CoachMark,
+    private func arrowOffset(for coachMark: CoachMarkConfiguration,
                              withProperties properties: CoachMarkComputedProperties,
                              inParentView parentView: UIView) -> CGFloat {
         var arrowOffset: CGFloat
@@ -175,7 +175,7 @@ class CoachMarkLayoutHelper {
         return arrowOffset
     }
 
-    private func leadingArrowOffset(for coachMark: CoachMark,
+    private func leadingArrowOffset(for coachMark: CoachMarkConfiguration,
                                     withProperties properties: CoachMarkComputedProperties,
                                     inParentView parentView: UIView) -> CGFloat {
         guard let pointOfInterest = coachMark.pointOfInterest else {
@@ -193,7 +193,7 @@ class CoachMarkLayoutHelper {
         }
     }
 
-    private func middleArrowOffset(for coachMark: CoachMark,
+    private func middleArrowOffset(for coachMark: CoachMarkConfiguration,
                                    withProperties properties: CoachMarkComputedProperties,
                                    inParentView parentView: UIView) -> CGFloat {
         guard let pointOfInterest = coachMark.pointOfInterest else {
@@ -208,7 +208,7 @@ class CoachMarkLayoutHelper {
         }
     }
 
-    private func trailingArrowOffset(for coachMark: CoachMark,
+    private func trailingArrowOffset(for coachMark: CoachMarkConfiguration,
                                      withProperties properties: CoachMarkComputedProperties,
                                      inParentView parentView: UIView) -> CGFloat {
         guard let pointOfInterest = coachMark.pointOfInterest else {
@@ -253,7 +253,7 @@ class CoachMarkLayoutHelper {
     ///
     /// - Returns: the alignment
     private func computeHorizontalAlignment(
-        of coachMark: CoachMark,
+        of coachMark: CoachMarkConfiguration,
         forLayoutDirection layoutDirection: UIUserInterfaceLayoutDirection,
         inFrame frame: CGRect
     ) -> CoachMarkHorizontalAlignment {
@@ -278,7 +278,7 @@ class CoachMarkLayoutHelper {
         }
     }
 
-    private func computeProperties(for coachMark: CoachMark,
+    private func computeProperties(for coachMark: CoachMarkConfiguration,
                                    inParentView parentView: UIView)
     -> CoachMarkComputedProperties {
         let horizontalAlignment = computeHorizontalAlignment(of: coachMark,

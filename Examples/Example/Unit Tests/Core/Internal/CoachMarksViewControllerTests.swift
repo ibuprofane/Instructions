@@ -4,10 +4,10 @@
 import XCTest
 @testable import Instructions
 
-class CoachMarksViewControllerTests: XCTestCase, CoachMarksControllerDelegate {
+class CoachMarksViewControllerTests: XCTestCase, TutorialControllerDelegate {
 
     let coachMarksController = CoachMarksViewController()
-    let skipViewDisplayManager = SkipViewDisplayManager()
+    let skipViewDisplayManager = SkippingManager()
     let coachMarkDisplayManager =
         CoachMarkDisplayManager(coachMarkLayoutHelper: CoachMarkLayoutHelper())
 

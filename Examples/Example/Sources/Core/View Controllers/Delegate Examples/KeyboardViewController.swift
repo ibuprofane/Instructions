@@ -76,12 +76,12 @@ internal class KeyboardViewController: UIViewController {
 }
 
 // MARK: - Protocol Conformance | CoachMarksControllerDataSource
-extension KeyboardViewController: CoachMarksControllerDataSource {
+extension KeyboardViewController: TutorialControllerDataSource {
     func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
         return 2
     }
 
-    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt index: Int) -> CoachMark {
+    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt index: Int) -> CoachMarkConfiguration {
         switch index {
         case 0:
             return coachMarksController.helper.makeCoachMark(for: self.avatar)
@@ -95,10 +95,10 @@ extension KeyboardViewController: CoachMarksControllerDataSource {
     func coachMarksController(
         _ coachMarksController: CoachMarksController,
         coachMarkViewsAt index: Int,
-        madeFrom coachMark: CoachMark
-    ) -> (bodyView: (UIView & CoachMarkBodyView), arrowView: (UIView & CoachMarkArrowView)?) {
+        madeFrom coachMark: CoachMarkConfiguration
+    ) -> (bodyView: (UIView & CoachMarkContentView), arrowView: (UIView & CoachMarkArrowView)?) {
 
-        var coachViews: (bodyView: CoachMarkBodyDefaultView, arrowView: CoachMarkArrowDefaultView?)
+        var coachViews: (bodyView: DefaultCoachMarkContentView, arrowView: DefaultCoachMarkPointerView?)
 
         switch index {
         case 1:
@@ -122,9 +122,9 @@ extension KeyboardViewController: CoachMarksControllerDataSource {
 }
 
 // MARK: - Protocol Conformance | CoachMarksControllerDelegate
-extension KeyboardViewController: CoachMarksControllerDelegate {
+extension KeyboardViewController: TutorialControllerDelegate {
     func coachMarksController(_ coachMarksController: CoachMarksController,
-                              willShow coachMark: inout CoachMark,
+                              willShow coachMark: inout CoachMarkConfiguration,
                               beforeChanging change: ConfigurationChange,
                               at index: Int) {
         if index == 1 {

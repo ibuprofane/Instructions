@@ -4,18 +4,18 @@
 import UIKit
 import Instructions
 
-class ViewController: UIViewController, CoachMarksControllerDataSource {
+class ViewController: UIViewController, TutorialControllerDataSource {
 
     @IBOutlet var rectangleView: UIView?
 
-    let coachMarksController = CoachMarksController()
+    let coachMarksController = TutorialController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.coachMarksController.dataSource = self
 
-        let skipView = CoachMarkSkipDefaultView()
+        let skipView = DefaultCoachMarkSkipperView()
         skipView.setTitle("Skip", for: .normal)
 
         self.coachMarksController.skipView = skipView
@@ -33,21 +33,21 @@ class ViewController: UIViewController, CoachMarksControllerDataSource {
         // Dispose of any resources that can be recreated.
     }
 
-    func numberOfCoachMarks(for coachMarkController: CoachMarksController)
+    func numberOfCoachMarks(for coachMarkController: TutorialController)
         -> Int {
             return 1
     }
 
-    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt: Int)
-        -> CoachMark {
+    func coachMarksController(_ coachMarksController: TutorialController, coachMarkAt: Int)
+        -> CoachMarkConfiguration {
             return coachMarksController.helper.makeCoachMark(for: rectangleView)
     }
 
     func coachMarksController(
-        _ coachMarksController: CoachMarksController,
+        _ coachMarksController: TutorialController,
         coachMarkViewsAt: Int,
-        madeFrom coachMark: CoachMark
-    ) -> (bodyView: (UIView & CoachMarkBodyView), arrowView: (UIView & CoachMarkArrowView)?) {
+        madeFrom coachMark: CoachMarkConfiguration
+    ) -> (bodyView: (UIView & CoachMarkContentView), arrowView: (UIView & CoachMarkArrowView)?) {
         let coachViews = coachMarksController.helper.makeDefaultCoachViews(
             withArrow: true,
             arrowOrientation: coachMark.arrowOrientation

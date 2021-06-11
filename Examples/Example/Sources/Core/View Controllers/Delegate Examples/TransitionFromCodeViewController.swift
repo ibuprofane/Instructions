@@ -31,7 +31,7 @@ internal class TransitionFromCodeViewController: ProfileViewController {
         self.postsLabel?.layer.cornerRadius = 4.0
         self.reputationLabel?.layer.cornerRadius = 4.0
 
-        let skipView = CoachMarkSkipDefaultView()
+        let skipView = DefaultCoachMarkSkipperView()
         skipView.setTitle("Skip", for: .normal)
 
         self.coachMarksController.skipView = skipView
@@ -49,12 +49,12 @@ internal class TransitionFromCodeViewController: ProfileViewController {
 }
 
 // MARK: - Protocol Conformance | CoachMarksControllerDataSource
-extension TransitionFromCodeViewController: CoachMarksControllerDataSource {
+extension TransitionFromCodeViewController: TutorialControllerDataSource {
     func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
         return 6
     }
 
-    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt index: Int) -> CoachMark {
+    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt index: Int) -> CoachMarkConfiguration {
         switch index {
         case 0:
             return coachMarksController.helper.makeCoachMark(
@@ -92,9 +92,9 @@ extension TransitionFromCodeViewController: CoachMarksControllerDataSource {
     func coachMarksController(
         _ coachMarksController: CoachMarksController,
         coachMarkViewsAt index: Int,
-        madeFrom coachMark: CoachMark
-    ) -> (bodyView: (UIView & CoachMarkBodyView), arrowView: (UIView & CoachMarkArrowView)?) {
-        var coachViews: (bodyView: CoachMarkBodyDefaultView, arrowView: CoachMarkArrowDefaultView?)
+        madeFrom coachMark: CoachMarkConfiguration
+    ) -> (bodyView: (UIView & CoachMarkContentView), arrowView: (UIView & CoachMarkArrowView)?) {
+        var coachViews: (bodyView: DefaultCoachMarkContentView, arrowView: DefaultCoachMarkPointerView?)
 
         // For the coach mark at index 2, we disable the ability to tap on the
         // coach mark to get to the next one, forcing the user to perform

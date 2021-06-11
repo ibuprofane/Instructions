@@ -17,7 +17,7 @@ internal class OnlyHintViewController: ProfileViewController {
         self.postsLabel?.layer.cornerRadius = 4.0
         self.reputationLabel?.layer.cornerRadius = 4.0
 
-        let skipView = CoachMarkSkipDefaultView()
+        let skipView = DefaultCoachMarkSkipperView()
         skipView.setTitle("Skip", for: .normal)
 
         self.coachMarksController.skipView = skipView
@@ -29,12 +29,12 @@ internal class OnlyHintViewController: ProfileViewController {
 }
 
 // MARK: - Protocol Conformance | CoachMarksControllerDataSource
-extension OnlyHintViewController: CoachMarksControllerDataSource {
+extension OnlyHintViewController: TutorialControllerDataSource {
     func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
         return 5
     }
 
-    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt index: Int) -> CoachMark {
+    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt index: Int) -> CoachMarkConfiguration {
         switch index {
         case 0:
             return coachMarksController.helper.makeCoachMark(
@@ -61,8 +61,8 @@ extension OnlyHintViewController: CoachMarksControllerDataSource {
     func coachMarksController(
         _ coachMarksController: CoachMarksController,
         coachMarkViewsAt index: Int,
-        madeFrom coachMark: CoachMark
-    ) -> (bodyView: (UIView & CoachMarkBodyView), arrowView: (UIView & CoachMarkArrowView)?) {
+        madeFrom coachMark: CoachMarkConfiguration
+    ) -> (bodyView: (UIView & CoachMarkContentView), arrowView: (UIView & CoachMarkArrowView)?) {
 
         var hintText = ""
 

@@ -26,7 +26,7 @@ class TestFlowViewController: ProfileViewController {
         self.postsLabel?.layer.cornerRadius = 4.0
         self.reputationLabel?.layer.cornerRadius = 4.0
 
-        let skipView = CoachMarkSkipDefaultView()
+        let skipView = DefaultCoachMarkSkipperView()
         skipView.setTitle("Skip", for: .normal)
 
         self.coachMarksController.skipView = skipView
@@ -50,41 +50,41 @@ class TestFlowViewController: ProfileViewController {
     }
 
     func coachMarksController(_ coachMarksController: CoachMarksController,
-                              willShow coachMark: inout CoachMark,
+                              willShow coachMark: inout CoachMarkConfiguration,
                               afterSizeTransition: Bool,
                               at index: Int) {
         print("[DEPRECATED] willShow at: \(index), afterSizeTransition: \(afterSizeTransition)")
     }
 
     func coachMarksController(_ coachMarksController: CoachMarksController,
-                              didShow coachMark: CoachMark,
+                              didShow coachMark: CoachMarkConfiguration,
                               afterSizeTransition: Bool,
                               at index: Int) {
         print("[DEPRECATED] didShow at: \(index), afterSizeTransition: \(afterSizeTransition)")
     }
 
     override func coachMarksController(_ coachMarksController: CoachMarksController,
-                                       willShow coachMark: inout CoachMark,
+                                       willShow coachMark: inout CoachMarkConfiguration,
                                        beforeChanging change: ConfigurationChange,
                                        at index: Int) {
         print("willShow at: \(index), beforeChanging: \(change)")
     }
 
     override func coachMarksController(_ coachMarksController: CoachMarksController,
-                                       didShow coachMark: CoachMark,
+                                       didShow coachMark: CoachMarkConfiguration,
                                        afterChanging change: ConfigurationChange,
                                        at index: Int) {
         print("didShow at: \(index), afterChanging: \(change)")
     }
 
     override func coachMarksController(_ coachMarksController: CoachMarksController,
-                                       willHide coachMark: CoachMark,
+                                       willHide coachMark: CoachMarkConfiguration,
                                        at index: Int) {
         print("willHide at: \(index)")
     }
 
     override func coachMarksController(_ coachMarksController: CoachMarksController,
-                                       didHide coachMark: CoachMark,
+                                       didHide coachMark: CoachMarkConfiguration,
                                        at index: Int) {
         print("didHide at: \(index)")
     }
@@ -109,13 +109,13 @@ class TestFlowViewController: ProfileViewController {
 }
 
 // MARK: - Protocol Conformance | CoachMarksControllerDataSource
-extension TestFlowViewController: CoachMarksControllerDataSource {
+extension TestFlowViewController: TutorialControllerDataSource {
     func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
         print("numberOfCoachMarksForCoachMarksController: \(String(describing: index))")
         return 4
     }
 
-    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt index: Int) -> CoachMark {
+    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt index: Int) -> CoachMarkConfiguration {
         print("coachMarksForIndex: \(index)")
         switch index {
         case 0:
@@ -142,10 +142,10 @@ extension TestFlowViewController: CoachMarksControllerDataSource {
     func coachMarksController(
         _ coachMarksController: CoachMarksController,
         coachMarkViewsAt index: Int,
-        madeFrom coachMark: CoachMark
-    ) -> (bodyView: (UIView & CoachMarkBodyView), arrowView: (UIView & CoachMarkArrowView)?) {
+        madeFrom coachMark: CoachMarkConfiguration
+    ) -> (bodyView: (UIView & CoachMarkContentView), arrowView: (UIView & CoachMarkArrowView)?) {
         print("coachMarkViewsForIndex: \(index)")
-        var coachViews: (bodyView: CoachMarkBodyDefaultView, arrowView: CoachMarkArrowDefaultView?)
+        var coachViews: (bodyView: DefaultCoachMarkContentView, arrowView: DefaultCoachMarkPointerView?)
 
         coachViews = coachMarksController.helper.makeDefaultCoachViews(
             withArrow: true,

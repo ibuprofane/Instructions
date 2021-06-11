@@ -18,7 +18,7 @@ internal class CustomViewsViewController: ProfileViewController {
 
         self.coachMarksController.overlay.backgroundColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.5)
 
-        let skipView = CoachMarkSkipDefaultView()
+        let skipView = DefaultCoachMarkSkipperView()
         skipView.isStyledByInstructions = false
         skipView.setTitle("Skip", for: .normal)
         skipView.setTitleColor(UIColor.white, for: .normal)
@@ -32,13 +32,13 @@ internal class CustomViewsViewController: ProfileViewController {
 }
 
 // MARK: - Protocol Conformance | CoachMarksControllerDataSource
-extension CustomViewsViewController: CoachMarksControllerDataSource {
+extension CustomViewsViewController: TutorialControllerDataSource {
     // MARK: - Protocol Conformance | CoachMarksControllerDataSource
     func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
         return 5
     }
 
-    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt index: Int) -> CoachMark {
+    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt index: Int) -> CoachMarkConfiguration {
 
         // This will create cutout path matching perfectly the given view.
         // No padding!
@@ -46,7 +46,7 @@ extension CustomViewsViewController: CoachMarksControllerDataSource {
             return UIBezierPath(rect: frame)
         }
 
-        var coachMark: CoachMark
+        var coachMark: CoachMarkConfiguration
 
         switch index {
         case 0:
@@ -87,11 +87,11 @@ extension CustomViewsViewController: CoachMarksControllerDataSource {
     func coachMarksController(
         _ coachMarksController: CoachMarksController,
         coachMarkViewsAt index: Int,
-        madeFrom coachMark: CoachMark
-    ) -> (bodyView: (UIView & CoachMarkBodyView), arrowView: (UIView & CoachMarkArrowView)?) {
+        madeFrom coachMark: CoachMarkConfiguration
+    ) -> (bodyView: (UIView & CoachMarkContentView), arrowView: (UIView & CoachMarkArrowView)?) {
 
-        let coachMarkBodyView = CustomCoachMarkBodyView()
-        var coachMarkArrowView: CustomCoachMarkArrowView?
+        let coachMarkBodyView = CustomCoachMarkContentView()
+        var coachMarkArrowView: CustomCoachMarkPointerView?
 
         var width: CGFloat = 0.0
 
@@ -108,7 +108,7 @@ extension CustomViewsViewController: CoachMarksControllerDataSource {
         // For that custom coachmark, we'll need to update a bit the arrow, so it'll look like
         // it fits the width of the view.
         if let arrowOrientation = coachMark.arrowOrientation {
-            let view = CustomCoachMarkArrowView(orientation: arrowOrientation)
+            let view = CustomCoachMarkPointerView(orientation: arrowOrientation)
 
             // If the view is larger than 1/3 of the overlay width, we'll shrink a bit the width
             // of the arrow.
@@ -158,7 +158,7 @@ extension CustomViewsViewController: CoachMarksControllerDataSource {
     }
 
     // MARK: - Private Helpers
-    private func configure(view0 view: CustomCoachMarkBodyView,
+    private func configure(view0 view: CustomCoachMarkContentView,
                            andUpdateWidth width: inout CGFloat) {
         view.hintLabel.text = self.avatarText
         view.nextButton.setTitle(self.nextButtonText, for: .normal)
@@ -168,7 +168,7 @@ extension CustomViewsViewController: CoachMarksControllerDataSource {
         }
     }
 
-    private func configure(view1 view: CustomCoachMarkBodyView,
+    private func configure(view1 view: CustomCoachMarkContentView,
                            andUpdateWidth width: inout CGFloat) {
         view.hintLabel.text = self.handleText
         view.nextButton.setTitle(self.nextButtonText, for: .normal)
@@ -178,7 +178,7 @@ extension CustomViewsViewController: CoachMarksControllerDataSource {
         }
     }
 
-    private func configure(view2 view: CustomCoachMarkBodyView,
+    private func configure(view2 view: CustomCoachMarkContentView,
                            andUpdateWidth width: inout CGFloat) {
         view.hintLabel.text = self.emailText
         view.nextButton.setTitle(self.nextButtonText, for: .normal)
@@ -188,7 +188,7 @@ extension CustomViewsViewController: CoachMarksControllerDataSource {
         }
     }
 
-    private func configure(view3 view: CustomCoachMarkBodyView,
+    private func configure(view3 view: CustomCoachMarkContentView,
                            andUpdateWidth width: inout CGFloat) {
         view.hintLabel.text = self.postsText
         view.nextButton.setTitle(self.nextButtonText, for: .normal)
@@ -198,7 +198,7 @@ extension CustomViewsViewController: CoachMarksControllerDataSource {
         }
     }
 
-    private func configure(view4 view: CustomCoachMarkBodyView,
+    private func configure(view4 view: CustomCoachMarkContentView,
                            andUpdateWidth width: inout CGFloat) {
         view.hintLabel.text = self.reputationText
         view.nextButton.setTitle(self.nextButtonText, for: .normal)

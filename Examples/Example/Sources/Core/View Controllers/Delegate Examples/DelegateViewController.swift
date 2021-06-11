@@ -6,7 +6,7 @@ import Instructions
 
 // MARK: - Main Controller
 // This class is an example of what can be achieved with the delegate methods.
-class DelegateViewController: ProfileViewController, CoachMarksControllerDataSource {
+class DelegateViewController: ProfileViewController, TutorialControllerDataSource {
 
     // MARK: IBOutlets
     @IBOutlet var avatarVerticalPositionConstraint: NSLayoutConstraint?
@@ -23,7 +23,7 @@ class DelegateViewController: ProfileViewController, CoachMarksControllerDataSou
         postsLabel?.layer.cornerRadius = 4.0
         reputationLabel?.layer.cornerRadius = 4.0
 
-        let skipView = CoachMarkSkipDefaultView()
+        let skipView = DefaultCoachMarkSkipperView()
         skipView.setTitle("Skip", for: .normal)
 
         coachMarksController.skipView = skipView
@@ -35,7 +35,7 @@ class DelegateViewController: ProfileViewController, CoachMarksControllerDataSou
     }
 
     func coachMarksController(_ coachMarksController: CoachMarksController,
-                              coachMarkAt index: Int) -> CoachMark {
+                              coachMarkAt index: Int) -> CoachMarkConfiguration {
         switch index {
         case 0:
             let cutoutPathMaker = { (frame: CGRect) -> UIBezierPath in
@@ -59,8 +59,8 @@ class DelegateViewController: ProfileViewController, CoachMarksControllerDataSou
 
     func coachMarksController(
         _ coachMarksController: CoachMarksController,
-        coachMarkViewsAt index: Int, madeFrom coachMark: CoachMark
-    ) -> (bodyView: (UIView & CoachMarkBodyView), arrowView: (UIView & CoachMarkArrowView)?) {
+        coachMarkViewsAt index: Int, madeFrom coachMark: CoachMarkConfiguration
+    ) -> (bodyView: (UIView & CoachMarkContentView), arrowView: (UIView & CoachMarkArrowView)?) {
 
         let coachViews = coachMarksController.helper.makeDefaultCoachViews(
             withArrow: true,
@@ -105,7 +105,7 @@ class DelegateViewController: ProfileViewController, CoachMarksControllerDataSou
     }
 
     override func coachMarksController(_ coachMarksController: CoachMarksController,
-                                       willShow coachMark: inout CoachMark,
+                                       willShow coachMark: inout CoachMarkConfiguration,
                                        beforeChanging change: ConfigurationChange, at index: Int) {
         if index == 0 && change == .nothing {
             // We'll need to play an animation before showing up the coach mark.
@@ -137,7 +137,7 @@ class DelegateViewController: ProfileViewController, CoachMarksControllerDataSou
     }
 
     override func coachMarksController(_ coachMarksController: CoachMarksController,
-                                       willHide coachMark: CoachMark, at index: Int) {
+                                       willHide coachMark: CoachMarkConfiguration, at index: Int) {
         if index == 1 {
             avatarVerticalPositionConstraint?.constant = 0
             view.needsUpdateConstraints()
@@ -159,7 +159,7 @@ class DelegateViewController: ProfileViewController, CoachMarksControllerDataSou
 }
 
 // MARK: - Protocol Conformance | CoachMarksControllerAnimationDelegate
-extension DelegateViewController: CoachMarksControllerAnimationDelegate {
+extension DelegateViewController: TutorialControllerDelegateAnimation {
     func coachMarksController(_ coachMarksController: CoachMarksController,
                               fetchAppearanceTransitionOfCoachMark coachMarkView: UIView,
                               at index: Int,

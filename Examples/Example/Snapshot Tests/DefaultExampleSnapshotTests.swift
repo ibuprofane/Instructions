@@ -8,7 +8,7 @@
 import FBSnapshotTestCase
 
 class DefaultExampleSnapshotTests: BaseSnapshotTests,
-                                   CoachMarksControllerDelegate {
+                                   TutorialControllerDelegate {
     var storyboard: UIStoryboard!
     var navigationController: UINavigationController!
     var delegateEndExpectation: XCTestExpectation?
@@ -63,7 +63,7 @@ class DefaultExampleSnapshotTests: BaseSnapshotTests,
 
     // MARK: Helpers
     func coachMarksController(_ coachMarksController: CoachMarksController,
-                              didShow coachMark: CoachMark,
+                              didShow coachMark: CoachMarkConfiguration,
                               afterChanging change: ConfigurationChange,
                               at index: Int) {
         if change == .statusBar { return }
@@ -109,7 +109,7 @@ class DefaultExampleSnapshotTests: BaseSnapshotTests,
 
     func setupController() {
         let controller =
-            storyboard.instantiateViewController(withIdentifier: "DefaultViewController")
+            storyboard.instantiateViewController(withIdentifier: "SnapshotViewController")
                 as! DefaultViewController // swiftlint:disable:this force_cast
 
         controller.snapshotDelegate = self

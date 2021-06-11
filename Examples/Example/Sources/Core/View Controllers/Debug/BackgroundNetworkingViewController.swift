@@ -56,7 +56,7 @@ internal class BackgroundNetworkingViewController: DefaultViewController {
 
     // MARK: CoachMarksControllerDelegate
     override func coachMarksController(_ coachMarksController: CoachMarksController,
-                                       willShow coachMark: inout CoachMark,
+                                       willShow coachMark: inout CoachMarkConfiguration,
                                        beforeChanging change: ConfigurationChange,
                                        at index: Int) {
         if index == 2 && change == .nothing {

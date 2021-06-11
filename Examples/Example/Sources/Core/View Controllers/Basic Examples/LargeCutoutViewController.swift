@@ -29,7 +29,7 @@ internal class LargeCutoutViewController: UIViewController {
         self.coachMarksController.overlay.isUserInteractionEnabled = true
         self.coachMarksController.dataSource = self
 
-        let skipView = CoachMarkSkipDefaultView()
+        let skipView = DefaultCoachMarkSkipperView()
         skipView.setTitle("Skip", for: .normal)
 
         self.coachMarksController.skipView = skipView
@@ -53,7 +53,7 @@ internal class LargeCutoutViewController: UIViewController {
 }
 
 // MARK: - Protocol Conformance | CoachMarksControllerDataSource
-extension LargeCutoutViewController: CoachMarksControllerDataSource {
+extension LargeCutoutViewController: TutorialControllerDataSource {
     func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
         return 2
     }
@@ -61,7 +61,7 @@ extension LargeCutoutViewController: CoachMarksControllerDataSource {
     func coachMarksController(
         _ coachMarksController: CoachMarksController,
         coachMarkAt index: Int
-    ) -> CoachMark {
+    ) -> CoachMarkConfiguration {
         switch index {
         case 0:
             let pathMaker = { (frame: CGRect) -> UIBezierPath in
@@ -86,8 +86,8 @@ extension LargeCutoutViewController: CoachMarksControllerDataSource {
     func coachMarksController(
         _ coachMarksController: CoachMarksController,
         coachMarkViewsAt index: Int,
-        madeFrom coachMark: CoachMark
-    ) -> (bodyView: (UIView & CoachMarkBodyView), arrowView: (UIView & CoachMarkArrowView)?) {
+        madeFrom coachMark: CoachMarkConfiguration
+    ) -> (bodyView: (UIView & CoachMarkContentView), arrowView: (UIView & CoachMarkArrowView)?) {
 
         let coachViews = coachMarksController.helper.makeDefaultCoachViews(
             withArrow: true, arrowOrientation: coachMark.arrowOrientation
